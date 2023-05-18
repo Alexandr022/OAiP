@@ -67,8 +67,6 @@ void printLapTops(lapTopArrayStruct* laptops)
     }
 }
 
-int sortCount;
-
 void arraySort(lapTopArrayStruct* laptops)
 {
     sortCount = getIntFromKayboard("Select the parameters by which sorting will be performed.\n1.Name\n2.Display size\n3.Resolution.\n4.Frequency\n5.CPU\n6.RAM size\n7.RAM type\n8.Storage size\n9.Storage type\n10.GPU\n11.VRAM\n12.Price");
@@ -84,9 +82,75 @@ void arraySort(lapTopArrayStruct* laptops)
 
     printf("Sorted list.\n");
     printLapTops(laptops);
-    menu(laptops);
-    
+    menuint(laptops);
+
 }
+
+void deleteStruct(lapTopArrayStruct* laptops)
+{
+    for (int i = 0; i < laptops->size; i++)
+    {
+        free(laptops[i].laptops);
+    }
+
+    free(laptops);
+    printf("Choose the next action you want to take.\n");
+    printf("1.At the begining.\n");
+    int count = getIntFromKayboard("2.Close programm.");
+
+
+    switch (count)
+    {
+    case 1:
+        main();
+        system("cls");
+    case 2:
+        return;
+    default:
+        return;
+    }
+
+
+}
+
+
+void menu()
+{
+    printf("----------------------------------------------------------------\n");
+    printf("Select an action.\n");
+    printf("1. Sort the array by each field of the structure.\n");
+    printf("2. Sorting by two fields at the same time.\n");
+    printf("3. Remove the structure from the array.\n");
+    printf("4. Parsing HTML file.\n");
+    printf("----------------------------------------------------------------\n");
+}
+
+int menuint(lapTopArrayStruct* laptops)
+{
+    menu();
+    int count = getIntFromKayboard("Write a number from 1 to 4.");
+
+    switch (count)
+    {
+    case 1:
+        arraySort(laptops);
+        break;
+    case 2:
+        return 0;
+    case 3:
+        deleteStruct(laptops);
+        break;
+    case 4:
+        return 0;
+    default:
+        return 0;
+    }
+    return 0;
+}
+
+
+
+
 
 int compareForSort(void* a,void* b) 
 {
@@ -123,31 +187,7 @@ int compareForSort(void* a,void* b)
     return 0;
 }
 
-void deleteStruct(lapTopArrayStruct* laptops)
-{
-    for (int i = 0; i < laptops->size; i++) 
-    {
-        free(laptops[i].laptops);
-    }
 
-    free(laptops);
-    printf("Choose the next action you want to take.\n");
-    printf("1.At the begining.\n");
-    int count = getIntFromKayboard("2.Close programm.");
-
-
-    switch (count)
-    {
-    case 1:
-        main();
-        system("cls");
-    case 2:
-        return;
-    default:
-        return;
-    }
-
-}
 
 
 int initializeStructByHand()
@@ -325,36 +365,11 @@ int initializeStructByHand()
     }
     
     printLapTops(laptops);
-    menu(laptops);
+    menuint(laptops);
     return 0;
 }
 
-void menu(lapTopArrayStruct* laptops)
-{
-    printf("----------------------------------------------------------------\n");
-    printf("Select an action.\n");
-    printf("1. Sort the array by each field of the structure.\n");
-    printf("2. Sorting by two fields at the same time.\n");
-    printf("3. Remove the structure from the array.\n");
-    printf("4. Parsing HTML file.\n");
-    int count = getIntFromKayboard("Write a number from 1 to 4.");
-    printf("----------------------------------------------------------------\n");
-    switch (count)
-    {
-    case 1:
-        arraySort(laptops);
-        break;
-    case 2:
-        return;
-    case 3:
-        deleteStruct(laptops);
-        break;
-    case 4:
-        return;
-    default:
-        return;
-    }
-}
+
 
 int main()
 {
