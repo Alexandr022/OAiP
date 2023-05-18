@@ -25,11 +25,13 @@ void frequency(Words* words, int size)
         printf("Invalid pointer: words is NULL.\n");
         return;
     }
-
+	int wordsSize = 0;
+	
     for (int i = 0; i < size; i++)
     {
        if (words[i].word != NULL) {
-        words[i].freq = words[i].countWords * (words[i].word != NULL ? strlen(words[i].word) : 0);
+	 wordsSize = strlen(words[i].word);
+        words[i].freq = words[i].countWords * wordsSize;
     }
         else {
             printf("Invalid pointer: word is NULL at index %d.\n", i);
@@ -167,9 +169,8 @@ void initializeArr(FILE* file, Words** words, int* size)
     *words = malloc(sizeof(Words));
 
 
-   if (*words == NULL) {
+  if (*words == NULL) {
     printf("Memory allocation failed.\n");
-    free(*words); 
     *words = NULL;
     return;
 }
