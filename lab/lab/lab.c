@@ -123,7 +123,7 @@ int compareForSort(void* a,void* b)
     return 0;
 }
 
-int deleteStruct(lapTopArrayStruct* laptops)
+void deleteStruct(lapTopArrayStruct* laptops)
 {
     for (int i = 0; i < laptops->size; i++) 
     {
@@ -142,12 +142,11 @@ int deleteStruct(lapTopArrayStruct* laptops)
         main();
         system("cls");
     case 2:
-        return 0;
+        return;
     default:
-        return 0;
+        return;
     }
 
-    return 0; 
 }
 
 
@@ -330,7 +329,7 @@ int initializeStructByHand()
     return 0;
 }
 
-int menu(lapTopArrayStruct* laptops)
+void menu(lapTopArrayStruct* laptops)
 {
     printf("----------------------------------------------------------------\n");
     printf("Select an action.\n");
@@ -346,12 +345,14 @@ int menu(lapTopArrayStruct* laptops)
         arraySort(laptops);
         break;
     case 2:
-        return 0;
+        return;
     case 3:
         deleteStruct(laptops);
         break;
     case 4:
-        return 0;
+        return;
+    default:
+        return;
     }
 }
 
