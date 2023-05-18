@@ -13,11 +13,6 @@ lapTopArrayStruct* initLapTopArrayStruct(int size)
         printf("Error. Failed to allocate memory.\n");
         return NULL;
     }
-    if (memory->laptops == NULL)
-    {
-        printf("Error. Failed to allocate memory.\n");
-        return NULL;
-    }
     return memory;
 }
 
@@ -74,7 +69,7 @@ void printLapTops(lapTopArrayStruct* laptops)
 
 int sortCount;
 
-int arraySort(lapTopArrayStruct* laptops)
+void arraySort(lapTopArrayStruct* laptops)
 {
     sortCount = getIntFromKayboard("Select the parameters by which sorting will be performed.\n1.Name\n2.Display size\n3.Resolution.\n4.Frequency\n5.CPU\n6.RAM size\n7.RAM type\n8.Storage size\n9.Storage type\n10.GPU\n11.VRAM\n12.Price");
 
@@ -90,6 +85,7 @@ int arraySort(lapTopArrayStruct* laptops)
     printf("Sorted list.\n");
     printLapTops(laptops);
     menu(laptops);
+    
 }
 
 int compareForSort(void* a,void* b) 
@@ -124,6 +120,7 @@ int compareForSort(void* a,void* b)
     case 12:
         return (laptops->price - laptops2->price);
     }
+    return 0;
 }
 
 int deleteStruct(lapTopArrayStruct* laptops)
@@ -138,11 +135,6 @@ int deleteStruct(lapTopArrayStruct* laptops)
     printf("1.At the begining.\n");
     int count = getIntFromKayboard("2.Close programm.");
 
-    while (count > 2 && count < 1)
-    {
-        printf("Enter 1 or 2.\n");
-        rewind(stdin);
-    }
 
     switch (count)
     {
@@ -151,11 +143,15 @@ int deleteStruct(lapTopArrayStruct* laptops)
         system("cls");
     case 2:
         return 0;
+    default:
+        return 0;
     }
+
+    return 0; 
 }
 
 
-void initializeStructByHand()
+int initializeStructByHand()
 {
     int size = getIntFromKayboard("Write a number of laptops.");
     lapTopArrayStruct* laptops = initLapTopArrayStruct(size);
@@ -277,12 +273,6 @@ void initializeStructByHand()
         printf("1.Windows 10\n2.Windows 11\n3.Linux\n4.None.\n");
         int OC = getIntFromKayboard("Enter a number from 1 to 4.");
 
-        while (OC > 4 && OC < 1)
-        {
-            printf("Wrong input.\n");
-            rewind(stdin);
-            int OC = getIntFromKayboard("Enter a number from 1 to 4.");
-        }
 
         switch (OC)
         {
@@ -298,18 +288,15 @@ void initializeStructByHand()
         case 4:
             laptops->laptops[i].OC = None;
             break;
+        default:
+            return 0;
         }
 
         printf("Enter color.\n");
         printf("1.Black\n2.Grey\n3.White\n4.Dark grey\n5.Dark blue\n6.Silver\n");
         int color = getIntFromKayboard("Enter a number from 1 to 6.");
 
-        while (color > 4 && color < 1)
-        {
-            printf("Wrong input.\n");
-            rewind(stdin);
-            int color = getIntFromKayboard("Enter a number from 1 to 6.");
-        }
+    
 
         switch (color)
         {
@@ -331,6 +318,8 @@ void initializeStructByHand()
         case 6:
             laptops->laptops[i].color = Silver;
             break;
+        default:
+            return 0;
         }
 
         laptops->laptops[i].price = getFloatFromKayboard("Enter a price.");
@@ -338,6 +327,7 @@ void initializeStructByHand()
     
     printLapTops(laptops);
     menu(laptops);
+    return 0;
 }
 
 int menu(lapTopArrayStruct* laptops)
@@ -368,11 +358,7 @@ int menu(lapTopArrayStruct* laptops)
 int main()
 {
     int count = getIntFromKayboard("Enter how you want to fill in the structure.\n1.By hand.\n2.With parser.\n3.Random init");
-    if (count > 1 && count < 2)
-    {
-        printf("Wrong input. Enter 1 or 2.\n");
-        rewind(stdin);
-    }
+    
     switch (count)
     {
     case 1:
@@ -383,8 +369,10 @@ int main()
         return 0;
     case 3:
         break;
+    default:
+        return 0;
     }
-   
+    return 0;
 }
 
 
@@ -398,10 +386,3 @@ int main()
 //   4. В окне "Список ошибок" можно просматривать ошибки.
 //   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
 //   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
-
-
-
-
-
-
-
