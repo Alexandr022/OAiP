@@ -69,13 +69,17 @@ void printLapTops(lapTopArrayStruct* laptops)
 
 void arraySort(lapTopArrayStruct* laptops)
 {
-    sortCount = getIntFromKayboard("Select the parameters by which sorting will be performed.\n1.Name\n2.Display size\n3.Resolution.\n4.Frequency\n5.CPU\n6.RAM size\n7.RAM type\n8.Storage size\n9.Storage type\n10.GPU\n11.VRAM\n12.Price");
+    printf("Select the parameters by which sorting will be performed.\n1.Name\n2.Display size\n3.Resolution.\n4.Frequency\n5.CPU\n6.RAM size\n7.RAM type\n8.Storage size\n9.Storage type\n10.GPU\n11.VRAM\n12.Price");
+    sortCount = 0; 
+    scanf_s("%d", &sortCount);
 
     while (sortCount > 12 && sortCount < 1)
     {
         printf("Wrong input.\n");
         rewind(stdin);
-        sortCount = getIntFromKayboard("Select the parameters by which sorting will be performed.\n1.Name\n2.Display size\n3.Resolution.\n4.Frequency\n5.CPU\n6.RAM size\n7.RAM type\n8.Storage size\n9.Storage type\n10.GPU\n11.VRAM\n12.Price");
+        printf("Select the parameters by which sorting will be performed.\n1.Name\n2.Display size\n3.Resolution.\n4.Frequency\n5.CPU\n6.RAM size\n7.RAM type\n8.Storage size\n9.Storage type\n10.GPU\n11.VRAM\n12.Price");
+    
+        scanf_s("%d", &sortCount);
     }
 
     qsort(laptops->laptops, laptops->size, sizeof(lapTopStruct), compareForSort);
@@ -96,8 +100,9 @@ void deleteStruct(lapTopArrayStruct* laptops)
     free(laptops);
     printf("Choose the next action you want to take.\n");
     printf("1.At the begining.\n");
-    int count = getIntFromKayboard("2.Close programm.");
-
+    printf("2.Close programm.\n");
+    int count = 0; 
+    scanf_s("%d", &count);
 
     switch (count)
     {
@@ -128,8 +133,10 @@ void menu()
 int menuint(lapTopArrayStruct* laptops)
 {
     menu();
-    int count = getIntFromKayboard("Write a number from 1 to 4.");
-
+    printf("Write a number from 1 to 4.\n");
+    int count = 0; 
+    scanf_s("%d", &count);
+     
     switch (count)
     {
     case 1:
@@ -192,7 +199,9 @@ int compareForSort(void* a,void* b)
 
 int initializeStructByHand()
 {
-    int size = getIntFromKayboard("Write a number of laptops.");
+    printf("Write a number of laptops.\n");
+    int size = 0; 
+    scanf_s("%d", &size);
     lapTopArrayStruct* laptops = initLapTopArrayStruct(size);
 
     for (size_t i = 0; i < size; i++)
@@ -310,7 +319,10 @@ int initializeStructByHand()
 
         printf("Enter OC.\n");
         printf("1.Windows 10\n2.Windows 11\n3.Linux\n4.None.\n");
-        int OC = getIntFromKayboard("Enter a number from 1 to 4.");
+        
+        int OC = 0;
+        scanf_s("%d", &OC);
+
 
 
         switch (OC)
@@ -328,13 +340,14 @@ int initializeStructByHand()
             laptops->laptops[i].OC = None;
             break;
         default:
-            return 0;
+            break;
         }
 
         printf("Enter color.\n");
         printf("1.Black\n2.Grey\n3.White\n4.Dark grey\n5.Dark blue\n6.Silver\n");
-        int color = getIntFromKayboard("Enter a number from 1 to 6.");
-
+        printf("Enter a number from 1 to 6.");
+        int color = 0;
+        scanf_s("%d", &color);
     
 
         switch (color)
@@ -360,8 +373,10 @@ int initializeStructByHand()
         default:
             return 0;
         }
-
-        laptops->laptops[i].price = getFloatFromKayboard("Enter a price.");
+        printf("Enter a price.\n");
+      
+        scanf_s("%f", &laptops->laptops[i].price);
+        
     }
     
     printLapTops(laptops);
@@ -373,7 +388,9 @@ int initializeStructByHand()
 
 int main()
 {
-    int count = getIntFromKayboard("Enter how you want to fill in the structure.\n1.By hand.\n2.With parser.\n3.Random init");
+    printf("Enter how you want to fill in the structure.\n1.By hand.\n2.With parser.\n3.Random init");
+    int count = 0;
+    scanf_s("%d", &count);
     
     switch (count)
     {
