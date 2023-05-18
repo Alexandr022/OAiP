@@ -9,6 +9,8 @@
 #include <string.h>
 #include "InputManager.h"
 
+int sortCount;
+
 typedef enum 
 {
     Windows_10,
