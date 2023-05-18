@@ -1,4 +1,4 @@
-﻿// lab.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
+// lab.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
 //
 
 #include "lab.h"
@@ -72,43 +72,6 @@ void printLapTops(lapTopArrayStruct* laptops)
     }
 }
 
-void initializeStructByParser(char* filename)
-{
-    FILE* fileStreamPtr = fopen(filename, "r");
-    if (fileStreamPtr == NULL) 
-    {
-        printf("Error opening file.\n");
-        return 0;
-    }
-
-    char* countString = "<span data-bind=";
-    char stopReading = "</";
-    char buffer[1000];
-    int count = 0;
-
-    while (!feof(filename))
-    {
-        read(filename, buffer, 1000);
-        if (buffer == countString[count])
-        {
-            count++;
-        }
-        else
-        {
-            count = 0;
-        }
-        if (count = strlen(countString))
-        {
-            break;
-        }
-
-        printf("Number initialising laptops : %d", &count);
-
-    }
-
-    fclose(fileStreamPtr);
-}
-
 int sortCount;
 
 int arraySort(lapTopArrayStruct* laptops)
@@ -163,11 +126,6 @@ int compareForSort(void* a,void* b)
     }
 }
 
-int twoFieldsArraySort()
-{
-    
-}
-
 int deleteStruct(lapTopArrayStruct* laptops)
 {
     for (int i = 0; i < laptops->size; i++) 
@@ -196,10 +154,6 @@ int deleteStruct(lapTopArrayStruct* laptops)
     }
 }
 
-int parsedHTML()
-{
-    
-}
 
 void initializeStructByHand()
 {
@@ -211,13 +165,6 @@ void initializeStructByHand()
         printf("%d laptop.\n", i + 1);
         printf("Enter a name.\n");
         scanf_s("%s", laptops->laptops[i].name, sizeof(laptops->laptops[i].name));
-
-        while (laptops->laptops[i].name, sizeof(laptops->laptops[i].name) > '9' && laptops->laptops[i].name, sizeof(laptops->laptops[i].name) < '1')
-        {
-            printf("Wrong input. Enter a name.\n");
-            rewind(stdin);
-            scanf_s("%s", laptops->laptops[i].name, sizeof(laptops->laptops[i].name));
-        }
 
         printf("Enter a displaysize ?.?.\n");
         scanf_s("%d", &laptops->laptops[i].displaysize[0]);
@@ -407,12 +354,14 @@ int menu(lapTopArrayStruct* laptops)
     {
     case 1:
         arraySort(laptops);
+        break;
     case 2:
-        twoFieldsArraySort();
+        return 0;
     case 3:
         deleteStruct(laptops);
+        break;
     case 4:
-        parsedHTML();
+        return 0;
     }
 }
 
