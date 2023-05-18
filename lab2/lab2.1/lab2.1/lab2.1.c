@@ -100,21 +100,81 @@ int averageLength(Words* words, int size)
 
 void initializeArr(FILE* file, Words** words, int* size)
 {
-	for (int i = 0; !feof(file); i++)
-	{
-		char* word = malloc(100);
-		fscanf_s(file, "%s", word, 100);
-		if (!isThereWord((*words), word, (*size)) && strlen(word) > 0)
-		{
-			(*words)[(*size) - 1].word = malloc(100);
-			(*words)[(*size) - 1].word = word;
-			(*words)[(*size) - 1].wordSize = strlen(word);
-			(*words)[(*size) - 1].countWords = 1;
-			(*words) = realloc(*words, (++(*size)) * sizeof(Words));
-		}
-	}
-	words = realloc(*words, ((*size)--) * sizeof(Words));
-	rewind(file);
+    int maxWordLength = 100;
+
+    *size = 0; // Initialize size to 0
+
+    // Allocate initial memory for words
+    *words = malloc(sizeof(Words));
+
+    // Check if memory allocation succeeded
+    if (*words == NULL) {
+        printf("Memory allocation failed.\n");
+        return;
+    }
+
+    char* word = malloc(maxWordLength);
+
+    // Check if memory allocation succeeded
+    if (word == NULL) {
+        printf("Memory allocation failed.\n");
+        free(*words); // Free the previously allocated memory for words
+        *words = NULL;
+        return;
+    }
+
+    while (fscanf(file, "%s", word) == 1) {
+        if (!isThereWord(*words, word, *size) && strlen(word) > 0) {
+            (*words)[*size].word = malloc(strlen(word) + 1);
+            
+            // Check if memory allocation succeeded
+            if ((*words)[*size].word == NULL) {
+                printf("Memory allocation failed.\n");
+                free(*words); // Free the previously allocated memory for words
+                *words = NULL;
+                free(word); // Free the current word
+                return;
+            }
+            
+            strcpy((*words)[*size].word, word);
+            (*words)[*size].wordSize = strlen(word);
+            (*words)[*size].countWords = 1;
+
+            (*size)++;
+
+            // Reallocate memory for words
+            Words* temp = realloc(*words, (*size + 1) * sizeof(Words));
+            
+            // Check if memory reallocation succeeded
+            if (temp == NULL) {
+                printf("Memory reallocation failed.\n");
+                free(*words); // Free the previously allocated memory for words
+                *words = NULL;
+                free(word); // Free the current word
+                return;
+            }
+            
+            *words = temp;
+        }
+    }
+
+    // Free the current word
+    free(word);
+
+    // Reallocate memory for words to the final size
+    Words* temp = realloc(*words, *size * sizeof(Words));
+    
+    // Check if memory reallocation succeeded
+    if (temp == NULL) {
+        printf("Memory reallocation failed.\n");
+        free(*words); // Free the previously allocated memory for words
+        *words = NULL;
+        return;
+    }
+    
+    *words = temp;
+
+    rewind(file);
 }
 
 int compareLong(void *a, void *b)
