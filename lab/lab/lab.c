@@ -380,8 +380,7 @@ int main()
         initializeStructByHand();
         break;
     case 2:
-        initializeStructByParser("LapTop.html");
-        break;
+        return 0;
     case 3:
         break;
     }
