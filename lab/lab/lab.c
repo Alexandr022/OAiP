@@ -371,7 +371,7 @@ int initializeStructByHand()
             laptops->laptops[i].color = Silver;
             break;
         default:
-            return 0;
+            break;
         }
         printf("Enter a price.\n");
       
