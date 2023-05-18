@@ -21,10 +21,20 @@ int isThereWord(Words* words, char* word, int size)
 
 void frequency(Words* words, int size)
 {
-	for (int i = 0; i < size; i++)
-	{
-		words[i].freq = words[i].countWords * strlen(words[i].word);
-	}
+    if (words == NULL) {
+        printf("Invalid pointer: words is NULL.\n");
+        return;
+    }
+
+    for (int i = 0; i < size; i++)
+    {
+        if (words[i].word != NULL) {
+            words[i].freq = words[i].countWords * strlen(words[i].word);
+        }
+        else {
+            printf("Invalid pointer: word is NULL at index %d.\n", i);
+        }
+    }
 }
 
 void distribution(Words* words, int* size, Words** wordsArrayOne, Words** wordsArrayTwo)
@@ -93,14 +103,19 @@ int averageCount(Words* words, int size)
 
 int averageLength(Words* words, int size)
 {
-	int average = 0;
+    int average = 0;
 
-	for (int i = 0; i < size; i++)
-	{
-		average += words[i].wordSize;
-	}
+    if (words == NULL) {
+        printf("Invalid pointer: words is NULL.\n");
+        return 0; // Return a default value or handle the error appropriately
+    }
 
-	return (average / size);
+    for (int i = 0; i < size; i++)
+    {
+        average += words[i].wordSize;
+    }
+
+    return (average / size);
 }
 
 void initializeArr(FILE* file, Words** words, int* size)
@@ -118,7 +133,20 @@ void initializeArr(FILE* file, Words** words, int* size)
         return;
     }
 
-    char* word = malloc(maxWordLength);
+    if (*words == NULL) {
+    printf("Memory allocation failed.\n");
+    return;
+}
+
+char* word = malloc(maxWordLength);
+
+// Check if memory allocation succeeded
+if (word == NULL) {
+    printf("Memory allocation failed.\n");
+    free(*words); // Free the previously allocated memory for words
+    *words = NULL;
+    return;
+}
 
     // Check if memory allocation succeeded
     if (word == NULL) {
@@ -129,39 +157,37 @@ void initializeArr(FILE* file, Words** words, int* size)
     }
 
     while (fscanf(file, "%s", word) == 1) {
-        if (!isThereWord(*words, word, *size) && strlen(word) > 0) {
-            (*words)[*size].word = malloc(strlen(word) + 1);
-            
-            // Check if memory allocation succeeded
-            if ((*words)[*size].word == NULL) {
-                printf("Memory allocation failed.\n");
-                free(*words); // Free the previously allocated memory for words
-                *words = NULL;
-                free(word); // Free the current word
-                return;
-            }
-            
-            strcpy((*words)[*size].word, word);
-            (*words)[*size].wordSize = strlen(word);
-            (*words)[*size].countWords = 1;
-
-            (*size)++;
-
-            // Reallocate memory for words
-            Words* temp = realloc(*words, (*size + 1) * sizeof(Words));
-            
-            // Check if memory reallocation succeeded
-            if (temp == NULL) {
-                printf("Memory reallocation failed.\n");
-                free(*words); // Free the previously allocated memory for words
-                *words = NULL;
-                free(word); // Free the current word
-                return;
-            }
-            
-            *words = temp;
+    if (word != NULL && !isThereWord(*words, word, *size) && strlen(word) > 0) {
+        (*words)[*size].word = malloc(strlen(word) + 1);
+        
+        // Check if memory allocation succeeded
+        if ((*words)[*size].word == NULL) {
+            printf("Memory allocation failed.\n");
+            free(*words); // Free the previously allocated memory for words
+            *words = NULL;
+            free(word); // Free the current word
+            return;
         }
+        
+        strcpy((*words)[*size].word, word);
+        (*words)[*size].wordSize = strlen(word);
+        (*words)[*size].countWords = 1;
+        (*size)++;
+        // Reallocate memory for words
+        Words* temp = realloc(*words, (*size + 1) * sizeof(Words));
+        
+        // Check if memory reallocation succeeded
+        if (temp == NULL) {
+            printf("Memory reallocation failed.\n");
+            free(*words); // Free the previously allocated memory for words
+            *words = NULL;
+            free(word); // Free the current word
+            return;
+        }
+        
+        *words = temp;
     }
+}
 
     // Free the current word
     free(word);
