@@ -1,0 +1,10 @@
+﻿  lab2.1.c
+C:\Users\Asus\Desktop\lab2\lab2.1\lab2.1\lab2.1.c(26,39): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\Asus\Desktop\lab2\lab2.1\lab2.1\lab2.1.c(32,19): warning C4013: averageCount: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\Asus\Desktop\lab2\lab2.1\lab2.1\lab2.1.c(33,17): warning C4013: averageLength: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\Asus\Desktop\lab2\lab2.1\lab2.1\lab2.1.c(111,37): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\Asus\Desktop\lab2\lab2.1\lab2.1\lab2.1.c(210,50): warning C4090: функция: разные квалификаторы "const"
+C:\Users\Asus\Desktop\lab2\lab2.1\lab2.1\lab2.1.c(210,50): warning C4113: "int (__cdecl *)(void *,void *)" отличается в списках параметров от "_CoreCrtNonSecureSearchSortCompareFunction"
+C:\Users\Asus\Desktop\lab2\lab2.1\lab2.1\lab2.1.c(211,51): warning C4090: функция: разные квалификаторы "const"
+C:\Users\Asus\Desktop\lab2\lab2.1\lab2.1\lab2.1.c(211,51): warning C4113: "int (__cdecl *)(void *,void *)" отличается в списках параметров от "_CoreCrtNonSecureSearchSortCompareFunction"
+  lab2.1.vcxproj -> C:\Users\Asus\Desktop\lab2\lab2.1\x64\Debug\lab2.1.exe
