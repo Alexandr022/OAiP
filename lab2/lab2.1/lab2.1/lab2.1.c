@@ -28,9 +28,9 @@ void frequency(Words* words, int size)
 
     for (int i = 0; i < size; i++)
     {
-        if (words[i].word != NULL) {
-            words[i].freq = words[i].countWords * strlen(words[i].word);
-        }
+       if (words[i].word != NULL) {
+        words[i].freq = words[i].countWords * (words[i].word != NULL ? strlen(words[i].word) : 0);
+    }
         else {
             printf("Invalid pointer: word is NULL at index %d.\n", i);
         }
@@ -52,7 +52,7 @@ void distribution(Words* words, int* size, Words** wordsArrayOne, Words** wordsA
         if (temp == NULL)
         {
             printf("Memory reallocation failed.\n");
-            // Handle error or return from the function appropriately
+            
         }
         else
         {
@@ -67,7 +67,7 @@ void distribution(Words* words, int* size, Words** wordsArrayOne, Words** wordsA
         if (temp == NULL)
         {
             printf("Memory reallocation failed.\n");
-            // Handle error or return from the function appropriately
+         
         }
         else
         {
@@ -167,10 +167,13 @@ void initializeArr(FILE* file, Words** words, int* size)
     *words = malloc(sizeof(Words));
 
 
-    if (*words == NULL) {
-        printf("Memory allocation failed.\n");
-        return;
-    }
+   if (*words == NULL) {
+    printf("Memory allocation failed.\n");
+    free(*words); 
+    *words = NULL;
+    return;
+}
+
 }
 
 char* word = malloc(maxWordLength);
