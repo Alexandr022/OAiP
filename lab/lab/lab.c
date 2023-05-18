@@ -83,7 +83,7 @@ void arraySort(lapTopArrayStruct* laptops)
     printf("Sorted list.\n");
     printLapTops(laptops);
     menuint(laptops);
-
+    
 }
 
 void deleteStruct(lapTopArrayStruct* laptops)
