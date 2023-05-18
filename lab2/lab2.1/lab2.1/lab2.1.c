@@ -44,44 +44,49 @@ void distribution(Words* words, int* size, Words** wordsArrayOne, Words** wordsA
     int newSize = 0, sizeOne = 1, sizeTwo = 1;
 
     for (int i = 0; i < *size; i++)
+{
+    if (wordsArrayTwo != NULL && *wordsArrayTwo != NULL && words[i].countWords > countWords && words[i].wordSize > wordSize)
     {
-        if (wordsArrayTwo != NULL && *wordsArrayTwo != NULL && words[i].countWords > countWords && words[i].wordSize > wordSize)
+        (*wordsArrayTwo)[sizeTwo - 1] = words[i];
+        Words* temp = realloc(*wordsArrayTwo, (sizeTwo + 1) * sizeof(Words));
+        if (temp == NULL)
         {
-            (*wordsArrayTwo)[sizeTwo - 1] = words[i];
-            Words* temp = realloc(*wordsArrayTwo, (sizeTwo + 1) * sizeof(Words));
-            if (temp == NULL)
-            {
-                printf("Memory reallocation failed.\n");
-                
-            }
-            else
-            {
-                *wordsArrayTwo = temp;
-                sizeTwo++;
-            }
+            printf("Memory reallocation failed.\n");
+            // Handle error or return from the function appropriately
         }
-
-        if (wordsArrayOne != NULL && *wordsArrayOne != NULL && words[i].countWords < countWords && words[i].wordSize < wordSize)
+        else
         {
-            (*wordsArrayOne)[sizeOne - 1] = words[i];
-            Words* temp = realloc(*wordsArrayOne, (sizeOne + 1) * sizeof(Words));
-            if (temp == NULL)
-            {
-                printf("Memory reallocation failed.\n");
-               
-            }
-            else
-            {
-                *wordsArrayOne = temp;
-                sizeOne++;
-            }
+            *wordsArrayTwo = temp;
+            sizeTwo++;
         }
     }
+    if (wordsArrayOne != NULL && *wordsArrayOne != NULL && words[i].countWords < countWords && words[i].wordSize < wordSize)
+    {
+        (*wordsArrayOne)[sizeOne - 1] = words[i];
+        Words* temp = realloc(*wordsArrayOne, (sizeOne + 1) * sizeof(Words));
+        if (temp == NULL)
+        {
+            printf("Memory reallocation failed.\n");
+            // Handle error or return from the function appropriately
+        }
+        else
+        {
+            *wordsArrayOne = temp;
+            sizeOne++;
+        }
+    }
+}
 
-    newSize = sizeTwo - 1;
+newSize = sizeTwo - 1;
+if (wordsArrayTwo != NULL && *wordsArrayTwo != NULL)
+{
     *wordsArrayTwo = realloc(*wordsArrayTwo, newSize * sizeof(Words));
+}
+if (wordsArrayOne != NULL && *wordsArrayOne != NULL)
+{
     *wordsArrayOne = realloc(*wordsArrayOne, newSize * sizeof(Words));
-    *size = newSize;
+}
+*size = newSize;
 }
 
 int replaceWords(FILE* file, Words* wordsArrayOne, Words* wordsArrayTwo, int size, char* word)
@@ -108,17 +113,24 @@ int replaceWords(FILE* file, Words* wordsArrayOne, Words* wordsArrayTwo, int siz
 int averageCount(Words* words, int size)
 {
     int average = 0;
-
-    if (words == NULL) {
+    
+    if (words == NULL)
+    {
         printf("Invalid pointer: words is NULL.\n");
-        return 0; 
+        return 0;
     }
-
+    
+    if (size == 0)
+    {
+        printf("Invalid size: size is zero.\n");
+        return 0;
+    }
+    
     for (int i = 0; i < size; i++)
     {
         average += words[i].countWords;
     }
-
+    
     return (average / size);
 }
 
@@ -129,6 +141,12 @@ int averageLength(Words* words, int size)
     if (words == NULL) {
         printf("Invalid pointer: words is NULL.\n");
         return 0; 
+    }
+	
+	 if (size == 0)
+    {
+        printf("Invalid size: size is zero.\n");
+        return 0;
     }
 
     for (int i = 0; i < size; i++)
