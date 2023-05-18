@@ -76,14 +76,19 @@ int replaceWords(FILE* file, Words* wordsArrayOne, Words* wordsArrayTwo, int siz
 
 int averageCount(Words* words, int size)
 {
-	int average = 0;
+    int average = 0;
 
-	for (int i = 0; i < size; i++)
-	{
-		average += words[i].countWords;
-	}
+    if (words == NULL) {
+        printf("Invalid pointer: words is NULL.\n");
+        return 0; // Return a default value or handle the error appropriately
+    }
 
-	return (average / size);
+    for (int i = 0; i < size; i++)
+    {
+        average += words[i].countWords;
+    }
+
+    return (average / size);
 }
 
 int averageLength(Words* words, int size)
