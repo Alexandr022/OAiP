@@ -39,7 +39,7 @@ void menu(BMPfile BMP)
 		case 4:
 			printf("Enter the gamma correction value.");
 			countGamma = 0;
-			scanf("%f", &countGamma);
+			scanf("%lf", &countGamma);
 			gammaCorrection(BMP, countGamma);
 			break;
 		default:
