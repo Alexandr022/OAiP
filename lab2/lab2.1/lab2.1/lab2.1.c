@@ -169,13 +169,7 @@ void initializeArr(FILE* file, Words** words, int* size)
     *words = malloc(sizeof(Words));
 
 
-  if (*words == NULL) {
-    printf("Memory allocation failed.\n");
-    *words = NULL;
-    return;
-}
 
-}
 
 char* word = malloc(maxWordLength);
 
