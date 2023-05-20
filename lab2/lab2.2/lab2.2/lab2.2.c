@@ -20,29 +20,30 @@ int replacement(FILE* file, Words* wordsArrOne, Words* wordsArrTwo, int size, ch
 
 void initializeArr(FILE* file, Words** wordsArrayOne, Words** wordsArrayTwo, int* size) {
     int i = 0;
-
     while (!feof(file)) {
         char* word1 = malloc(100);
         char* word2 = malloc(100);
-        fscanf(file, "%s", word1);
-        fscanf(file, "%s", word2);
-
-        (*wordsArrayOne)[i] = (Words){0};
-        (*wordsArrayTwo)[i] = (Words){0};
-
+        fscanf(file, "%99s", word1);
+        fscanf(file, "%99s", word2);
+        
+        (*wordsArrayOne)[i].word = malloc(strlen(word1) + 1); 
+        (*wordsArrayTwo)[i].word = malloc(strlen(word2) + 1);  
+        
         strcpy((*wordsArrayOne)[i].word, word1);
         strcpy((*wordsArrayTwo)[i].word, word2);
-
+        
         (*size)++;
         *wordsArrayOne = realloc(*wordsArrayOne, (*size) * sizeof(Words));
         *wordsArrayTwo = realloc(*wordsArrayTwo, (*size) * sizeof(Words));
-
+        
         printf("%d: %s -> %s\n", i + 1, (*wordsArrayOne)[i].word, (*wordsArrayTwo)[i].word);
         i++;
+        
         free(word1);
         free(word2);
     }
 }
+
 
 void fillFile(FILE* file, FILE* newFile, Words* wordsArrayOne, Words* wordsArrayTwo, int size) {
     int i = 0;
