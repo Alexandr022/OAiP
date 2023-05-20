@@ -23,8 +23,8 @@ void initializeArr(FILE* file, Words** wordsArrayOne, Words** wordsArrayTwo, int
     while (!feof(file)) {
         char* word1 = malloc(100);
         char* word2 = malloc(100);
-        fscanf(file, "%s", word1);
-        fscanf(file, "%s", word2);
+        fscanf(file, "%99s", word1);
+        fscanf(file, "%99s", word2);
 
         (*wordsArrayOne)[i] = (Words){0};
         (*wordsArrayTwo)[i] = (Words){0};
@@ -48,7 +48,7 @@ void fillFile(FILE* file, FILE* newFile, Words* wordsArrayOne, Words* wordsArray
     while (!feof(file)) {
         char c;
         char* word = malloc(100);
-        fscanf(file, "%s%c", word, &c);
+        fscanf(file, "%99s%c", word, &c);
         if (!replacement(newFile, wordsArrayOne, wordsArrayTwo, size, word) && !feof(file)) {
             fprintf(newFile, "%s", word);
         }
