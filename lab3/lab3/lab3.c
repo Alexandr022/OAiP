@@ -97,56 +97,53 @@ void convertToBlackAndWhite(BMPfile BMP)
 	}
 }
 
-void medianFilter(BMPfile* BMP, int filterSize)
-{
-	int pad = (4 - ((BMP->BMPinfo.width * BMP->BMPinfo.bitsPixels / 8) % 4)) % 4;
+void medianFilter(BMPfile* BMP, int filterSize) {
+    int pad = (4 - ((BMP->BMPinfo.width * BMP->BMPinfo.bitsPixels / 8) % 4)) % 4;
+    unsigned char* tempPixels = (unsigned char*)malloc(BMP->BMPinfo.width * BMP->BMPinfo.height * BMP->BMPinfo.bitsPixels / 8);
 
-	unsigned char* tempPixels = (unsigned char*)malloc(BMP->BMPinfo.width * BMP->BMPinfo.height * BMP->BMPinfo.bitsPixels / 8);
+    
+    for (int i = 0; i < BMP->BMPinfo.width * BMP->BMPinfo.height * BMP->BMPinfo.bitsPixels / 8; i++) {
+        tempPixels[i] = BMP->pixels[i];
+    }
 
-	for (int i = 0; i < BMP->BMPinfo.width * BMP->BMPinfo.height * BMP->BMPinfo.bitsPixels / 8; i++)
-	{
-		tempPixels[i] = BMP->pixels[i];
-	}
+    for (unsigned int y = 0; y < BMP->BMPinfo.height; y++) {
+        for (unsigned int x = 0; x < BMP->BMPinfo.width; x++) {
+            int red = 0;
+            int green = 0;
+            int blue = 0;
+            int count = 0;
 
-	for (unsigned int y = 0; y < BMP->BMPinfo.height; y++)
-	{
-		for (unsigned int x = 0; x < BMP->BMPinfo.width; x++)
-		{
-			int red = 0;
-			int green = 0;
-			int blue = 0;
-			int count = 0;
+            for (int fy = -filterSize / 2; fy <= filterSize / 2; fy++) {
+                for (int fx = -filterSize / 2; fx <= filterSize / 2; fx++) {
+                    int xi = x + fx;
+                    int yi = y + fy;
 
-			for (int fy = -filterSize / 2; fy <= filterSize / 2; fy++)
-			{
-				for (int fx = -filterSize / 2; fx <= filterSize / 2; fx++)
-				{
-					int xi = x + fx;
-					int yi = y + fy;
+                    if (xi < 0 || xi >= BMP->BMPinfo.width || yi < 0 || yi >= BMP->BMPinfo.height) {
+                        continue;
+                    }
 
-					if (xi < 0 || xi >= BMP->BMPinfo.width || yi < 0 || yi >= BMP->BMPinfo.height)
-					{
-						continue;
-					}
+                    int index = ((BMP->BMPinfo.height - yi - 1) * BMP->BMPinfo.width + xi) * BMP->BMPinfo.bitsPixels / 8;
 
-					int index = ((BMP->BMPinfo.height - yi - 1) * BMP->BMPinfo.width + xi) * BMP->BMPinfo.bitsPixels / 8;
-					int b = tempPixels[index];
-					int g = tempPixels[index + 1];
-					int r = tempPixels[index + 2];
-					blue += b;
-					green += g;
-					red += r;
-					count++;
-				}
-			}
-			int index = ((BMP->BMPinfo.height - y - 1) * BMP->BMPinfo.width + x) * BMP->BMPinfo.bitsPixels / 8;
-			BMP->pixels[index] = (unsigned char)(blue / count);
-			BMP->pixels[index + 1] = (unsigned char)(green / count);
-			BMP->pixels[index + 2] = (unsigned char)(red / count);
-		}
-	}
+                    if (index + 2 < BMP->BMPinfo.width * BMP->BMPinfo.height * BMP->BMPinfo.bitsPixels / 8) {
+                        int b = tempPixels[index];
+                        int g = tempPixels[index + 1];
+                        int r = tempPixels[index + 2];
+                        blue += b;
+                        green += g;
+                        red += r;
+                        count++;
+                    }
+                }
+            }
 
-	free(tempPixels);
+            int index = ((BMP->BMPinfo.height - y - 1) * BMP->BMPinfo.width + x) * BMP->BMPinfo.bitsPixels / 8;
+            BMP->pixels[index] = (unsigned char)(blue / count);
+            BMP->pixels[index + 1] = (unsigned char)(green / count);
+            BMP->pixels[index + 2] = (unsigned char)(red / count);
+        }
+    }
+
+    free(tempPixels);
 }
 
 int comparePixels(const void* a, const void* b)
