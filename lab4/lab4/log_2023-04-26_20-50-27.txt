@@ -1,0 +1,12 @@
+[20:50:31]Question: Is it animal?
+[20:50:34]>1
+[20:50:34]Question: Is it mineral?
+[20:50:34]>1
+[20:50:34]Question: it a nasekomoe
+[20:50:35]>1
+[20:50:35]Question: Its vegetable
+[20:50:36]>1
+[20:50:36]Question: Dima lox?
+[20:50:37]>2
+[20:50:37]Question: Of course
+[20:50:38]>2
