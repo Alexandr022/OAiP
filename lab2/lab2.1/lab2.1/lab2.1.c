@@ -47,34 +47,32 @@ void distribution(Words* words, int* size, Words** wordsArrayOne, Words** wordsA
     Words* tempTwo = NULL;
 
     for (int i = 0; i < *size; i++)
+{
+    if (wordsArrayTwo != NULL && *wordsArrayTwo != NULL && words[i].countWords > countWords && words[i].wordSize > wordSize)
     {
-        if (wordsArrayTwo != NULL && wordsArrayTwo != NULL && words[i].countWords > countWords && words[i].wordSize > wordSize)
+        tempTwo = realloc(*wordsArrayTwo, (sizeTwo + 1) * sizeof(Words));
+        if (tempTwo == NULL)
         {
-            tempTwo = realloc(*wordsArrayTwo, (sizeTwo + 1) * sizeof(Words));
-            if (tempTwo == NULL)
-            {
-                printf("Memory reallocation failed.\n");
-                break;
-            }
-
-            *wordsArrayTwo = tempTwo;
-            (*wordsArrayTwo)[sizeTwo] = words[i];
-            sizeTwo++;
+            printf("Memory reallocation failed.\n");
+            break;
         }
-        else if (wordsArrayOne != NULL && *wordsArrayOne != NULL && words[i].countWords < countWords && words[i].wordSize < wordSize)
-        {
-            tempOne = realloc(*wordsArrayOne, (sizeOne + 1) * sizeof(Words));
-            if (tempOne == NULL)
-            {
-                printf("Memory reallocation failed.\n");
-                break;
-            }
-
-            *wordsArrayOne = tempOne;
-            (*wordsArrayOne)[sizeOne] = words[i];
-            sizeOne++;
-        }
+        *wordsArrayTwo = tempTwo;
+        (*wordsArrayTwo)[sizeTwo] = words[i];
+        sizeTwo++;
     }
+    else if (wordsArrayOne != NULL && *wordsArrayOne != NULL && words[i].countWords < countWords && words[i].wordSize < wordSize)
+    {
+        tempOne = realloc(*wordsArrayOne, (sizeOne + 1) * sizeof(Words));
+        if (tempOne == NULL)
+        {
+            printf("Memory reallocation failed.\n");
+            break;
+        }
+        *wordsArrayOne = tempOne;
+        (*wordsArrayOne)[sizeOne] = words[i];
+        sizeOne++;
+    }
+}
 
     if (wordsArrayTwo != NULL)
     {
