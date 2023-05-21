@@ -18,7 +18,7 @@ void addIPadress()
     char dns[MAX_LENGTH_SIZE];
     printf("Write DNS\n");
     printf(">");
-    scanf("%s", dns);
+    scanf("%99s", dns);
 
     char ip[MAX_LENGTH_SIZE];
     printf("Write IP\n");
