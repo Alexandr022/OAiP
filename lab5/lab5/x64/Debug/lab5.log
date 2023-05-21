@@ -1,0 +1,6 @@
+﻿  lab5.c
+D:\lab5\lab5\lab5.c(108,17): warning C4013: countEntries: нет определения; предполагается "extern" с возвратом типа "int"
+D:\lab5\lab5\lab5.c(203,27): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+  main.c
+  Создание кода...
+  lab5.vcxproj -> D:\lab5\x64\Debug\lab5.exe
