@@ -146,6 +146,9 @@ void hashtableAdd(HashTable* table, const char* key, const char* value)
     {
         if (internalLookup(table, key)) 
         {
+            free(entry->key);
+            free(entry->value);
+            free(entry);
             return;
         }
         if (table->table[index]->prev != NULL) 
@@ -155,13 +158,13 @@ void hashtableAdd(HashTable* table, const char* key, const char* value)
     }
     entry->prev = NULL;
     entry->next = table->table[index];
-
     if (table->table[index] != NULL) 
     {
         table->table[index]->prev = entry;
     }
     table->table[index] = entry;
 }
+
 
 int checkIPaddress(const char* ip)
 {
