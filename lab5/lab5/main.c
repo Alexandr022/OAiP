@@ -51,7 +51,7 @@ void printHashTable(const HashTable* cache)
     }
 }
 
-int main() 
+void main() 
 {
     HashTable* cache = createHashTable();
 
@@ -86,11 +86,10 @@ int main()
             printHashTable(cache);
             break;
         default:
-            return 0;
+            return;
         }
     }
 
-    return 0;
 }
 // Çàïóñê ïðîãðàììû: CTRL+F5 èëè ìåíþ "Îòëàäêà" > "Çàïóñê áåç îòëàäêè"
 // Îòëàäêà ïðîãðàììû: F5 èëè ìåíþ "Îòëàäêà" > "Çàïóñòèòü îòëàäêó"
