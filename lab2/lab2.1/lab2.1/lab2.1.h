@@ -19,4 +19,5 @@ typedef struct
 
 int averageCount(Words* words, int size);
 
+int averageLength(Words* words, int size);
 
