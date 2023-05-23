@@ -94,12 +94,25 @@ void moveToHead(HashTable* table, unsigned int index, HashEntry* entry)
         table->table[index] = entry;
     }
 }
-
+int countEntries(const HashTable* table)
+{
+    int count = 0;
+    for (int i = 0; i < table->size; i++) 
+    {
+        HashEntry* current = table->table[i];
+        while (current != NULL) 
+        {
+            count++;
+            current = current->next;
+        }
+    }
+    return count;
+}
 int internalLookup(HashTable* table, const char* key)
 {
     unsigned int index = hashFunction(key, table->size);
     HashEntry* current = table->table[index];
-    const HashEntry* prev = NULL;
+   
 
     while (current != NULL) 
     {
@@ -115,26 +128,13 @@ int internalLookup(HashTable* table, const char* key)
             return 1;
         }
 
-        prev = current;
+   
         current = current->next;
     }
     return 0;
 }
 
-int countEntries(const HashTable* table)
-{
-    int count = 0;
-    for (int i = 0; i < table->size; i++) 
-    {
-        HashEntry* current = table->table[i];
-        while (current != NULL) 
-        {
-            count++;
-            current = current->next;
-        }
-    }
-    return count;
-}
+
 
 
 void hashtableAdd(HashTable* table, const char* key, const char* value)
@@ -313,7 +313,7 @@ void writeDNS(const char* filename, const char* dns_name, const char* ip_address
     char line[MAX_LENGTH_SIZE];
     while (fgets(line, sizeof(line), file) != NULL)
     {
-        const char* current_dns = strtok(line, " ");
+        const char* current_dns = strtok_r(line, " ");
         if (strcmp(current_dns, dns_name) == 0)
         {
             printf("Error: IP address '%s' already exists in file\n", dns_name);
