@@ -46,7 +46,8 @@ void distribution(Words* words, int* size, Words** wordsArrayOne, Words** wordsA
     Words* tempOne = NULL;
     Words* tempTwo = NULL;
     
-    for (int i = 0; i < *size; i++)
+    int i;
+    for (i = 0; i < *size; i++)
     {
         if (wordsArrayTwo != NULL && *wordsArrayTwo != NULL && words[i].countWords > countWords && words[i].wordSize > wordSize)
         {
@@ -96,7 +97,7 @@ void distribution(Words* words, int* size, Words** wordsArrayOne, Words** wordsA
 }
 
 
-int replaceWords(FILE* file, Words* wordsArrayOne, Words* wordsArrayTwo, int size, char* word)
+int replaceWords(FILE* file, Words* wordsArrayOne, Words* wordsArrayTwo, int size, const char* word)
 {
     int bool_ = 0;
     for (int i = 0; i < size; i++)
@@ -117,6 +118,7 @@ int replaceWords(FILE* file, Words* wordsArrayOne, Words* wordsArrayTwo, int siz
 
 
 
+
 void initializeArr(FILE* file, Words** words, int* size)
 {
     int maxWordLength = 100;
@@ -130,6 +132,7 @@ void initializeArr(FILE* file, Words** words, int* size)
     }
     
     int fscanfResult;
+    int allocationFailure = 0;  
     while ((fscanfResult = fscanf(file, "%99s", word)) == 1)
     {
         if (!isThereWord(*words, word, *size) && strlen(word) > 0)
@@ -138,7 +141,8 @@ void initializeArr(FILE* file, Words** words, int* size)
             if (temp == NULL)
             {
                 printf("Memory reallocation failed.\n");
-                break;
+                allocationFailure = 1;
+                break;  
             }
             *words = temp;
             
@@ -146,7 +150,8 @@ void initializeArr(FILE* file, Words** words, int* size)
             if ((*words)[*size].word == NULL)
             {
                 printf("Memory allocation failed.\n");
-                break;
+                allocationFailure = 1;
+                break;  
             }
             
             strcpy((*words)[*size].word, word);
@@ -156,8 +161,21 @@ void initializeArr(FILE* file, Words** words, int* size)
         }
     }
     
+    if (allocationFailure)
+    {
+       
+        for (int i = 0; i < *size; i++)
+        {
+            free((*words)[i].word);
+        }
+        free(*words);
+        *words = NULL;
+        *size = 0;
+    }
+    
     free(word);
 }
+
 
 
 int main()
