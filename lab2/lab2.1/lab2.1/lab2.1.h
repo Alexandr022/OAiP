@@ -24,3 +24,5 @@ int averageLength(Words* words, int size);
 int isThereWord(Words* words, const char* word, int size);
 
 void frequency(Words* words, int size);
+
+void distribution(Words* words, int* size, Words** wordsArrayOne, Words** wordsArrayTwo);
