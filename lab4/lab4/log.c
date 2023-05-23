@@ -23,7 +23,7 @@ void createLog(const char* format, va_list args) {
         fprintf(logOutput, "[%s]", buffer);
     }
     
-    vfprintf(logOutput, format, args);
+    vprintf(logOutput, format, args);
     
     fprintf(logOutput, "\n");
 }
