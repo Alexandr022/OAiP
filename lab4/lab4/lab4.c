@@ -4,10 +4,21 @@
 #include "lab4.h"
 #include "log.h"
 
-void getCurrentLocalTime(struct tm *timeinfo) 
-{
+void getCurrentLocalTime(struct tm *timeinfo) {
     time_t now = time(NULL);
-    localtime_r(&now, timeinfo);
+    struct tm *gm_time = gmtime(&now);
+    if (gm_time == NULL) {
+        perror("gmtime");
+        return;
+    }
+    *timeinfo = *gm_time;
+    time_t local_time = mktime(timeinfo);
+    if (local_time == -1) {
+        perror("mktime");
+        return;
+    }
+    *timeinfo = *localtime(&local_time);
+}
     
 int main() 
 {
