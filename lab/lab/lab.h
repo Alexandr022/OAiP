@@ -71,3 +71,5 @@ void deleteStruct(lapTopArrayStruct* laptops);
 int menuint(lapTopArrayStruct* laptops);
 
 void menu();
+
+int validateInputRange(int min, int max);
