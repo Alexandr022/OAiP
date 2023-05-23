@@ -99,7 +99,7 @@ int internalLookup(HashTable* table, const char* key)
 {
     unsigned int index = hashFunction(key, table->size);
     HashEntry* current = table->table[index];
-    HashEntry* prev = NULL;
+    const HashEntry* prev = NULL;
 
     while (current != NULL) 
     {
@@ -152,16 +152,7 @@ void hashtableAdd(HashTable* table, const char* key, const char* value)
     if (table->table[index] != NULL) {
         table->table[index]->prev = entry;
     }
-    /*else
-    {
-        HashEntry* current = table->table[index];
-        while (current->next!= NULL)
-        {
-            current = current->next;
-        }
-        current->next = entry;
-        entry->prev = current;
-    }*/
+   
     table->table[index] = entry;
 }
 
