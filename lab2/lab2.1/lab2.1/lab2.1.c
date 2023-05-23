@@ -46,8 +46,7 @@ void distribution(Words* words, int* size, Words** wordsArrayOne, Words** wordsA
     Words* tempOne = NULL;
     Words* tempTwo = NULL;
     
-    int i;
-    for (i = 0; i < *size; i++)
+    for (int i = 0; i < *size; i++)
     {
         if (wordsArrayTwo != NULL && *wordsArrayTwo != NULL && words[i].countWords > countWords && words[i].wordSize > wordSize)
         {
@@ -75,7 +74,7 @@ void distribution(Words* words, int* size, Words** wordsArrayOne, Words** wordsA
         }
     }
     
-    if (wordsArrayTwo != NULL)
+    if (wordsArrayTwo != NULL && sizeTwo > 0)
     {
         tempTwo = realloc(*wordsArrayTwo, sizeTwo * sizeof(Words));
         if (tempTwo != NULL)
@@ -84,7 +83,7 @@ void distribution(Words* words, int* size, Words** wordsArrayOne, Words** wordsA
         }
     }
     
-    if (wordsArrayOne != NULL)
+    if (wordsArrayOne != NULL && sizeOne > 0)
     {
         tempOne = realloc(*wordsArrayOne, sizeOne * sizeof(Words));
         if (tempOne != NULL)
