@@ -26,3 +26,5 @@ int isThereWord(Words* words, const char* word, int size);
 void frequency(Words* words, int size);
 
 void distribution(Words* words, int* size, Words** wordsArrayOne, Words** wordsArrayTwo);
+
+int replaceWords(FILE* file, Words* wordsArrayOne, Words* wordsArrayTwo, int size, char* word);
