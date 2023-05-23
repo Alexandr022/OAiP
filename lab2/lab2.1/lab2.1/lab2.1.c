@@ -40,52 +40,58 @@ void distribution(Words* words, int* size, Words** wordsArrayOne, Words** wordsA
 {
     int countWords = averageCount(words, *size);
     int wordSize = averageLength(words, *size);
-    int sizeOne = 0, sizeTwo = 0;
+    int sizeOne = 0;
+    int sizeTwo = 0;
+    
     Words* tempOne = NULL;
     Words* tempTwo = NULL;
-
+    
     for (int i = 0; i < *size; i++)
-{
-    if (wordsArrayTwo != NULL && *wordsArrayTwo != NULL && words[i].countWords > countWords && words[i].wordSize > wordSize)
     {
-        tempTwo = realloc(*wordsArrayTwo, (sizeTwo + 1) * sizeof(Words));
-        if (tempTwo == NULL)
+        if (wordsArrayTwo != NULL && *wordsArrayTwo != NULL && words[i].countWords > countWords && words[i].wordSize > wordSize)
         {
-            printf("Memory reallocation failed.\n");
-            break;
+            tempTwo = realloc(*wordsArrayTwo, (sizeTwo + 1) * sizeof(Words));
+            if (tempTwo == NULL)
+            {
+                printf("Memory reallocation failed.\n");
+                break;
+            }
+            *wordsArrayTwo = tempTwo;
+            (*wordsArrayTwo)[sizeTwo] = words[i];
+            sizeTwo++;
         }
-        *wordsArrayTwo = tempTwo;
-        (*wordsArrayTwo)[sizeTwo] = words[i];
-        sizeTwo++;
-    }
-    else if (wordsArrayOne != NULL && *wordsArrayOne != NULL && words[i].countWords < countWords && words[i].wordSize < wordSize)
-    {
-        tempOne = realloc(*wordsArrayOne, (sizeOne + 1) * sizeof(Words));
-        if (tempOne == NULL)
+        else if (wordsArrayOne != NULL && *wordsArrayOne != NULL && words[i].countWords < countWords && words[i].wordSize < wordSize)
         {
-            printf("Memory reallocation failed.\n");
-            break;
+            tempOne = realloc(*wordsArrayOne, (sizeOne + 1) * sizeof(Words));
+            if (tempOne == NULL)
+            {
+                printf("Memory reallocation failed.\n");
+                break;
+            }
+            *wordsArrayOne = tempOne;
+            (*wordsArrayOne)[sizeOne] = words[i];
+            sizeOne++;
         }
-        *wordsArrayOne = tempOne;
-        (*wordsArrayOne)[sizeOne] = words[i];
-        sizeOne++;
     }
-}
-
+    
     if (wordsArrayTwo != NULL)
     {
         tempTwo = realloc(*wordsArrayTwo, sizeTwo * sizeof(Words));
         if (tempTwo != NULL)
+        {
             *wordsArrayTwo = tempTwo;
+        }
     }
-
+    
     if (wordsArrayOne != NULL)
     {
         tempOne = realloc(*wordsArrayOne, sizeOne * sizeof(Words));
         if (tempOne != NULL)
+        {
             *wordsArrayOne = tempOne;
+        }
     }
-
+    
     *size = sizeOne;
 }
 
