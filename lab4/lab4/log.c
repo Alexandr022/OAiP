@@ -10,7 +10,7 @@ void logOpen(char* file)
     logOutput = fopen(file, "w");
 }
 
-void createLog(const char* format, ...) {
+void createLog(const char* format, va_list args) {
     time_t now = time(NULL);
     char buffer[26];
     const struct *tm timeinfo = localtime_r(&now);
@@ -23,15 +23,10 @@ void createLog(const char* format, ...) {
         fprintf(logOutput, "[%s]", buffer);
     }
     
-    va_list args;
-    va_start(args, format);
     vfprintf(logOutput, format, args);
-    va_end(args);
     
     fprintf(logOutput, "\n");
 }
-
-
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
 // Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
