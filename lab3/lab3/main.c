@@ -31,7 +31,7 @@ int main()
 		scanf("%99s", outputBMPname);
 		rewind(stdin);
 	}
-;
+
 	outputBMPfile(outputBMP, BMP);
 	printf("New image successfully saved.\n");
 
