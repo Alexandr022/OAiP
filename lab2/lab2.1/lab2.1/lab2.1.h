@@ -22,3 +22,5 @@ int averageCount(Words* words, int size);
 int averageLength(Words* words, int size);
 
 int isThereWord(Words* words, const char* word, int size);
+
+void frequency(Words* words, int size);
