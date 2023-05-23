@@ -45,7 +45,7 @@ void convertToBlackAndWhite(BMPfile BMP)
 {
 	if (BMP.BMPinfo.bitsPixels == 24)
 	{
-		int gray;
+		unsigned char gray;
 
 		for (int i = 0; i < BMP.BMPinfo.width * BMP.BMPinfo.height * BMP.BMPinfo.bitsPixels / 8; i += 3)
 		{
@@ -55,84 +55,66 @@ void convertToBlackAndWhite(BMPfile BMP)
 			BMP.pixels[i + 2] = gray;
 		}
 	}
-	if (BMP.BMPinfo.bitsPixels == 16)
-	{
-		int i, j;
-		unsigned char grayValue;
-		int brightness = 128; 
-		
-		for (i = 0; i < BMP.BMPinfo.height; i++)
-		{
-			for (j = 0; j < BMP.BMPinfo.width; j++)
-			{
-				grayValue = 0.2989 * BMP.pixels[(i * BMP.BMPinfo.width + j) * 3 + 2] + 0.5870 * BMP.pixels[(i * BMP.BMPinfo.width + j) * 3 + 1] + 0.1140 * BMP.pixels[(i * BMP.BMPinfo.width + j) * 3];
-
-				if (grayValue >= brightness)
-				{
-					BMP.pixels[(i * BMP.BMPinfo.width + j) * 3 + 2] = 255;
-					BMP.pixels[(i * BMP.BMPinfo.width + j) * 3 + 1] = 255;
-					BMP.pixels[(i * BMP.BMPinfo.width + j) * 3] = 255;
-				}
-				else
-				{
-					BMP.pixels[(i * BMP.BMPinfo.width + j) * 3 + 2] = 0;
-					BMP.pixels[(i * BMP.BMPinfo.width + j) * 3 + 1] = 0;
-					BMP.pixels[(i * BMP.BMPinfo.width + j) * 3] = 0;
-				}
-			}
-		}
-	}
-
-	else
-	{
-		int gray;
-
-		for (int i = 0; i < BMP.BMPinfo.width * BMP.BMPinfo.height * BMP.BMPinfo.bitsPixels / 8; i += 3)
-		{
-			gray = (0.2989 * BMP.pixels[i] + 0.5870 * BMP.pixels[i + 1] + 0.1140 * BMP.pixels[i + 2]) / 3;
-			BMP.pixels[i] = gray;
-			BMP.pixels[i + 1] = gray;
-			BMP.pixels[i + 2] = gray;
-		}
-	}
+	
 }
 
-void medianFilter(BMPfile* BMP, int filterSize) {
-    int pad = (4 - ((BMP->BMPinfo.width * BMP->BMPinfo.bitsPixels / 8) % 4)) % 4;
-    unsigned char* tempPixels = (unsigned char*)malloc(BMP->BMPinfo.width * BMP->BMPinfo.height * BMP->BMPinfo.bitsPixels / 8);
-    
-    // Copy pixel data to tempPixels
-    for (int i = 0; i < BMP->BMPinfo.width * BMP->BMPinfo.height * BMP->BMPinfo.bitsPixels / 8; i++) {
-        tempPixels[i] = BMP->pixels[i];
+void copyPixelData(const unsigned char* srcPixels, unsigned char* destPixels, int size)
+{
+    for (int i = 0; i < size; i++) {
+        destPixels[i] = srcPixels[i];
     }
+}
+
+void calculatePixelAverage(const unsigned char* tempPixels, const BMPinfo* BMPinfo, int x, int y, int filterSize, int* red, int* green, int* blue, int* count)
+{
+    int width = BMPinfo->width;
+    int height = BMPinfo->height;
+    int bitsPerPixel = BMPinfo->bitsPixels;
     
-    for (unsigned int y = 0; y < BMP->BMPinfo.height; y++) {
-        for (unsigned int x = 0; x < BMP->BMPinfo.width; x++) {
+    for (int fy = -filterSize / 2; fy <= filterSize / 2; fy++) {
+        for (int fx = -filterSize / 2; fx <= filterSize / 2; fx++) {
+            int xi = x + fx;
+            int yi = y + fy;
+            if (xi >= 0 && xi < width && yi >= 0 && yi < height) {
+                int index = ((height - yi - 1) * width + xi) * bitsPerPixel / 8;
+                int b = tempPixels[index];
+                int g = tempPixels[index + 1];
+                int r = tempPixels[index + 2];
+                *blue += b;
+                *green += g;
+                *red += r;
+                (*count)++;
+            }
+        }
+    }
+}
+
+void medianFilter(BMPfile* BMP, int filterSize)
+{
+    //int pad = (4 - ((BMP->BMPinfo.width * BMP->BMPinfo.bitsPixels / 8) % 4)) % 4;
+    unsigned char* tempPixels = (unsigned char*)malloc(BMP->BMPinfo.width * BMP->BMPinfo.height * BMP->BMPinfo.bitsPixels / 8);
+
+    if (tempPixels == NULL) {
+        printf("Memory allocation failed.\n");
+        return;
+    }
+
+    copyPixelData(BMP->pixels, tempPixels, BMP->BMPinfo.width * BMP->BMPinfo.height * BMP->BMPinfo.bitsPixels / 8);
+
+    unsigned int height = BMP->BMPinfo.height;
+    unsigned int width = BMP->BMPinfo.width;
+    int bitsPerPixel = BMP->BMPinfo.bitsPixels;
+
+    for (unsigned int y = 0; y < height; y++) {
+        for (unsigned int x = 0; x < width; x++) {
             int red = 0;
             int green = 0;
             int blue = 0;
             int count = 0;
-            
-            for (int fy = -filterSize / 2; fy <= filterSize / 2; fy++) {
-                for (int fx = -filterSize / 2; fx <= filterSize / 2; fx++) {
-                    int xi = x + fx;
-                    int yi = y + fy;
-                    if (xi < 0 || xi >= BMP->BMPinfo.width || yi < 0 || yi >= BMP->BMPinfo.height) {
-                        continue;
-                    }
-                    int index = ((BMP->BMPinfo.height - yi - 1) * BMP->BMPinfo.width + xi) * BMP->BMPinfo.bitsPixels / 8;
-                    if (index + 2 < BMP->BMPinfo.width * BMP->BMPinfo.height * BMP->BMPinfo.bitsPixels / 8) {
-                        int b = tempPixels[index];
-                        int g = tempPixels[index + 1];
-                        int r = tempPixels[index + 2];
-                        blue += b;
-                        green += g;
-                        red += r;
-                        count++;
-                    }
-                }
-            }
-            int index = ((BMP->BMPinfo.height - y - 1) * BMP->BMPinfo.width + x) * BMP->BMPinfo.bitsPixels / 8;
+
+            calculatePixelAverage(tempPixels, &BMP->BMPinfo, x, y, filterSize, &red, &green, &blue, &count);
+
+            int index = ((height - y - 1) * width + x) * bitsPerPixel / 8;
             if (count > 0) {
                 BMP->pixels[index] = (unsigned char)(blue / count);
                 BMP->pixels[index + 1] = (unsigned char)(green / count);
@@ -140,19 +122,19 @@ void medianFilter(BMPfile* BMP, int filterSize) {
             }
         }
     }
+    
     free(tempPixels);
 }
-
 int comparePixels(const void* a, const void* b)
 {
-	unsigned char pixelA = *(unsigned char*)a;
-	unsigned char pixelB = *(unsigned char*)b;
+	const unsigned char* pixelA = (const unsigned char*)a;
+	const unsigned char* pixelB = (const unsigned char*)b;
 
-	if (pixelA < pixelB)
+	if (*pixelA < *pixelB)
 	{
 		return -1;
 	}
-	if (pixelA > pixelB)
+	if (*pixelA > *pixelB)
 	{
 		return 1;
 	}
