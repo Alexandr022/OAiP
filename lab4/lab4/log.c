@@ -13,7 +13,7 @@ void logOpen(char* file)
 void createLog(const char* format, ...) {
     time_t now = time(NULL);
     char buffer[26];
-    struct tm* timeinfo = localtime(&now);
+    const struct tm* timeinfo = localtime_r(&now);
     strftime(buffer, sizeof(buffer), "%H:%M:%S", timeinfo);
     if (!logOutput) {
         logOutput = stderr;
