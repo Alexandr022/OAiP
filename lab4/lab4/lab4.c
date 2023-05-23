@@ -4,12 +4,14 @@
 #include "lab4.h"
 #include "log.h"
 
+void getCurrentLocalTime(struct tm *timeinfo) 
+{
+    time_t now = time(NULL);
+    localtime_r(&now, timeinfo);
+    
 int main() 
 {
-    char log[LENGTH];
-    time_t now = time(NULL);
-    const struct tm* timeinfo;
-    localtime_r(&now, &timeinfo);
+    getCurrentLocalTime(&timeinfo);
     strftime(log, sizeof(log), "log_%Y-%m-%d_%H-%M-%S.txt", timeinfo);
     logOpen(log);
     printf("Enter file name");
