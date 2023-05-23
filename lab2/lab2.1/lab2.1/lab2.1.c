@@ -36,96 +36,61 @@ void frequency(Words* words, int size)
     }
 }
 
-void distribution(Words* words, int* size, Words** wordsArrayOne, Words** wordsArrayTwo)
+void initializeArr(FILE* file, Words** words, int* size)
 {
-    int countWords = averageCount(words, *size);
-    int wordSize = averageLength(words, *size);
-    int sizeOne = 0;
-    int sizeTwo = 0;
-    
-    Words* tempOne = NULL;
-    Words* tempTwo = NULL;
-    
-    int reallocationFailure = 0;
-    
-    for (int i = 0; i < *size; i++)
+    int maxWordLength = 100;
+    *size = 0;
+    *words = NULL;
+    char* word = malloc(maxWordLength);
+    if (word == NULL)
     {
-        if (wordsArrayTwo != NULL && *wordsArrayTwo != NULL && words[i].countWords > countWords && words[i].wordSize > wordSize)
+        printf("Memory allocation failed.\n");
+        return;
+    }
+    
+    int fscanfResult;
+    int allocationFailure = 0;  
+    while ((fscanfResult = fscanf(file, "%99s", word)) == 1)
+    {
+        if (!isThereWord(*words, word, *size) && strlen(word) > 0)
         {
-            tempTwo = realloc(*wordsArrayTwo, (sizeTwo + 1) * sizeof(Words));
-            if (tempTwo == NULL)
+            Words* temp = realloc(*words, (*size + 1) * sizeof(Words));
+            if (temp == NULL)
             {
                 printf("Memory reallocation failed.\n");
-                reallocationFailure = 1;
-                break;
+                allocationFailure = 1;
+                break;  
             }
-            *wordsArrayTwo = tempTwo;
-            (*wordsArrayTwo)[sizeTwo] = words[i];
-            sizeTwo++;
-        }
-        else if (wordsArrayOne != NULL && *wordsArrayOne != NULL && words[i].countWords < countWords && words[i].wordSize < wordSize)
-        {
-            tempOne = realloc(*wordsArrayOne, (sizeOne + 1) * sizeof(Words));
-            if (tempOne == NULL)
+            *words = temp;
+            
+            (*words)[*size].word = malloc(strlen(word) + 1);
+            if ((*words)[*size].word == NULL)
             {
-                printf("Memory reallocation failed.\n");
-                reallocationFailure = 1;
-                break;
+                printf("Memory allocation failed.\n");
+                allocationFailure = 1;
+                return; 
             }
-            *wordsArrayOne = tempOne;
-            (*wordsArrayOne)[sizeOne] = words[i];
-            sizeOne++;
+            
+            strcpy((*words)[*size].word, word);
+            (*words)[*size].wordSize = strlen(word);
+            (*words)[*size].countWords = 1;
+            (*size)++;
         }
     }
     
-    if (!reallocationFailure)
+    if (allocationFailure)
     {
-        if (wordsArrayTwo != NULL && sizeTwo > 0)
+     
+        for (int i = 0; i < *size; i++)
         {
-            tempTwo = realloc(*wordsArrayTwo, sizeTwo * sizeof(Words));
-            if (tempTwo != NULL)
-            {
-                *wordsArrayTwo = tempTwo;
-            }
-            else
-            {
-                printf("Memory reallocation failed.\n");
-                reallocationFailure = 1;
-            }
+            free((*words)[i].word);
         }
-        
-        if (wordsArrayOne != NULL && sizeOne > 0)
-        {
-            tempOne = realloc(*wordsArrayOne, sizeOne * sizeof(Words));
-            if (tempOne != NULL)
-            {
-                *wordsArrayOne = tempOne;
-            }
-            else
-            {
-                printf("Memory reallocation failed.\n");
-                reallocationFailure = 1;
-            }
-        }
+        free(*words);
+        *words = NULL;
+        *size = 0;
     }
     
-    if (reallocationFailure)
-    {
-        free(*wordsArrayOne);
-        *wordsArrayOne = NULL;
-        
-        // Free only if wordsArrayTwo is not NULL
-        if (wordsArrayTwo != NULL)
-        {
-            free(*wordsArrayTwo);
-            *wordsArrayTwo = NULL;
-        }
-        
-        sizeOne = 0;
-        sizeTwo = 0;
-    }
-    
-    *size = sizeOne;
+    free(word);
 }
 
 int replaceWords(FILE* file, Words* wordsArrayOne, Words* wordsArrayTwo, int size, const char* word)
@@ -182,7 +147,7 @@ void initializeArr(FILE* file, Words** words, int* size)
             {
                 printf("Memory allocation failed.\n");
                 allocationFailure = 1;
-                break;  
+                return;
             }
             
             strcpy((*words)[*size].word, word);
