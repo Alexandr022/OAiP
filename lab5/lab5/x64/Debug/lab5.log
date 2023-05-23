@@ -1,0 +1,6 @@
+﻿  lab5.c
+C:\Users\Asus\Desktop\лабб\lab5\lab5\lab5.c(196,27): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+  main.c
+C:\Users\Asus\Desktop\лабб\lab5\lab5\main.c(15,57): warning C4020: hashFunction: слишком много фактических параметров
+  Создание кода...
+  lab5.vcxproj -> C:\Users\Asus\Desktop\лабб\lab5\x64\Debug\lab5.exe

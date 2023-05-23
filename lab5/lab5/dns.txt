@@ -1,0 +1,7 @@
+www.google.com 108.177.16.0
+lms.bsuir.by 192.168.251.23
+lms2.bsuir.by lms.bsuir.by
+goole.com 192.168.123.132
+google.com 255.255.255.0
+lms3.bsuir.by lms.bsuir.by
+github.com 31.24.89.141
