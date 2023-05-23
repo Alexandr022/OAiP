@@ -8,27 +8,39 @@ int main()
 {
     char log[LENGTH];
     time_t now = time(NULL);
-    struct tm* timeinfo = localtime(&now);
+    const struct tm* timeinfo;
+    localtime_r(&now, &timeinfo);
     strftime(log, sizeof(log), "log_%Y-%m-%d_%H-%M-%S.txt", timeinfo);
     logOpen(log);
     printf("Enter file name");
     char filename[LENGTH]; 
     scanf("%99s", filename);
+    
     FILE* input = fopen(filename, "r");
+    if (input == NULL) {
+        printf("Failed to open the file.\n");
+        return 1;
+    }
+    
     Node* root = initTree(input);
-
     fclose(input);
-
+    
     printf("Hi! Make a guess and I'll try to guess it.\n");
-
     gameTree(root);
-
-    initNewTree(root, fopen(filename, "w"));
+    
+    FILE* output = fopen(filename, "w");
+    if (output == NULL) {
+        printf("Failed to create the output file.\n");
+        freeTree(root);
+        return 1;
+    }
+    initNewTree(root, output);
+    fclose(output);
   
     freeTree(root);
-
     return 0;
 }
+
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
 // Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
