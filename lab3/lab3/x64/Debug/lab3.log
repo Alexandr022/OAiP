@@ -1,0 +1,11 @@
+﻿  lab3.c
+C:\Users\Asus\Desktop\лабб\lab3\lab3\lab3.c(33,20): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Asus\Desktop\лабб\lab3\lab3\lab3.c(41,20): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Asus\Desktop\лабб\lab3\lab3\lab3.c(53,21): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Asus\Desktop\лабб\lab3\lab3\lab3.c(119,84): warning C4133: функция: несовместимые типы - из "int *" в "PixelAverage *"
+C:\Users\Asus\Desktop\лабб\lab3\lab3\lab3.c(119,86): warning C4020: calculatePixelAverage: слишком много фактических параметров
+C:\Users\Asus\Desktop\лабб\lab3\lab3\lab3.c(150,20): warning C4018: <: несоответствие типов со знаком и без знака
+  menu.c
+  Создание кода...
+  LINK : не найден или не выполнена сборка C:\Users\Asus\Desktop\лабб\lab3\x64\Debug\lab3.exe при последней инкрементной компоновке; выполняется полная компоновка
+  lab3.vcxproj -> C:\Users\Asus\Desktop\лабб\lab3\x64\Debug\lab3.exe
