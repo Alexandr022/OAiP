@@ -71,7 +71,7 @@ void arraySort(lapTopArrayStruct* laptops)
         scanf_s("%d", &sortCount);
     }
 
-    qsort(laptops->laptops, laptops->size, sizeof(lapTopStruct), compareForSort);
+    qsort(laptops->laptops, laptops->size, sizeof(lapTopStruct), &compareForSort);
 
     printf("Sorted list.\n");
     printLapTops(laptops);
@@ -79,41 +79,44 @@ void arraySort(lapTopArrayStruct* laptops)
     
 }
 
-int compareForSort(const void* a,const void* b) 
+int compareForSort(const void* a, const void* b)
 {
     const lapTopStruct* laptops = (const lapTopStruct*)a;
     const lapTopStruct* laptops2 = (const lapTopStruct*)b;
-
     switch (sortCount)
     {
     case 1:
         return strcmp(laptops->name, laptops2->name);
     case 2:
-        return (laptops->displaysize - laptops2->displaysize);
+        return laptops->displaysize - laptops2->displaysize;
     case 3:
-        return (laptops->resolution - laptops2->resolution);
+        return laptops->resolution - laptops2->resolution;
     case 4:
-        return (laptops->frequency - laptops2->frequency);
+        return laptops->frequency - laptops2->frequency;
     case 5:
         return strcmp(laptops->cpu, laptops2->cpu);
     case 6:
-        return (laptops->ramsize - laptops2->ramsize);
+        return laptops->ramsize - laptops2->ramsize;
     case 7:
         return strcmp(laptops->ramtype, laptops2->ramtype);
     case 8:
-        return (laptops->storagesize - laptops2->storagesize);
+        return laptops->storagesize - laptops2->storagesize;
     case 9:
         return strcmp(laptops->storagetype, laptops2->storagetype);
     case 10:
         return strcmp(laptops->gpu, laptops2->gpu);
     case 11:
-        return (laptops->vram - laptops2->vram);
+        return laptops->vram - laptops2->vram;
     case 12:
-        return (laptops->price - laptops2->price);
-    default :
+        if (laptops->price == laptops2->price)
+            return 0;
+        else if (laptops->price > laptops2->price)
+            return 1;
+        else
+            return -1;
+    default:
         return 0;
     }
-    return 0;
 }
 
 
@@ -122,7 +125,7 @@ int compareForSort(const void* a,const void* b)
 int initializeStructByHand()
 {
     printf("Write a number of laptops.\n");
-    int size = 0; 
+    int size = 0;
     scanf_s("%d", &size);
     lapTopArrayStruct* laptops = initLapTopArrayStruct(size);
 
@@ -132,181 +135,130 @@ int initializeStructByHand()
         printf("Enter a name.\n");
         scanf_s("%s", laptops->laptops[i].name, sizeof(laptops->laptops[i].name));
 
-        printf("Enter a displaysize ?.?.\n");
-        scanf_s("%d", &laptops->laptops[i].displaysize[0]);
+       
+        printf("Enter a display size (13-17).\n");
+        laptops->laptops[i].displaysize[0] = validateInputRange(13, 17);
 
-        while (laptops->laptops[i].displaysize[0] != 13 && laptops->laptops[i].displaysize[0] != 14 && laptops->laptops[i].displaysize[0] != 15 && laptops->laptops[i].displaysize[0] != 16 && laptops->laptops[i].displaysize[0] != 17)
-        {
-            printf("Wrong input.\n");
-            rewind(stdin);
-            scanf_s("%d", &laptops->laptops[i].displaysize[0]);
-        }
-
+        
         switch (laptops->laptops[i].displaysize[0])
         {
-        case 13:
-            laptops->laptops[i].displaysize[1] = 3;
-            break;
-        case 14:
-            laptops->laptops[i].displaysize[1] = 0;
-            break;
-        case 15:
-            laptops->laptops[i].displaysize[1] = 6;
-            break;  
-        case 16:
-            laptops->laptops[i].displaysize[1] = 0;
-            break;
-        case 17:
-            laptops->laptops[i].displaysize[1] = 3;
-            break;
-        default:
-            printf("Wrong input. Enter a name.\n");
-            rewind(stdin);
+            case 13:
+                laptops->laptops[i].displaysize[1] = 3;
+                break;
+            case 14:
+                laptops->laptops[i].displaysize[1] = 4;
+                break;
+            default:
+                break;
         }
 
-        printf("Enter a resolution ?x?.\n");
-        scanf_s("%d", &laptops->laptops[i].resolution[0]);
+       
+        printf("Enter a resolution (1024, 1920, 2560).\n");
+        laptops->laptops[i].resolution[0] = validateInputValues(1024, 1920, 2560);
 
-        while (laptops->laptops[i].resolution[0] != 1024 && laptops->laptops[i].resolution[0] != 1920 && laptops->laptops[i].resolution[0] != 2560)
-        {
-            printf("Wrong input.\n");
-            rewind(stdin);
-            scanf_s("%d", &laptops->laptops[i].resolution[0]);
-        }
-        
+       
         switch (laptops->laptops[i].resolution[0])
         {
-        case 1024:
-            laptops->laptops[i].resolution[1] = 720;
-            break;
-        case 1920:
-            laptops->laptops[i].resolution[1] = 1080;
-            break;
-        case 2560:
-            laptops->laptops[i].resolution[1] = 1140;
-            break;
-        default:
-            break;
+            case 1024:
+                laptops->laptops[i].resolution[1] = 720;
+                break;
+            case 1920:
+                laptops->laptops[i].resolution[1] = 1080;
+                break;
+            case 2560:
+                laptops->laptops[i].resolution[1] = 1140;
+                break;
+            default:
+                break;
         }
- 
+
         
-        printf("Enter a frequency.\n");
-        scanf_s("%d", &laptops->laptops[i].frequency);
+        printf("Enter a frequency (60, 120, 144, 160).\n");
+        laptops->laptops[i].frequency = validateInputValues(60, 120, 144, 160);
 
-        while (laptops->laptops[i].frequency != 60 && laptops->laptops[i].frequency != 120 && laptops->laptops[i].frequency != 144 && laptops->laptops[i].frequency != 160)
-        {
-            printf("Wrong input.\n");
-            rewind(stdin);
-            scanf_s("%d", &laptops->laptops[i].frequency);
-        }
-
+      
         printf("Enter a CPU.\n");
         scanf_s("%s", laptops->laptops[i].cpu, sizeof(laptops->laptops[i].cpu));
-        
-        printf("Enter a RAM size.\n");
-        scanf_s("%d", &laptops->laptops[i].ramsize);
 
-        while (laptops->laptops[i].ramsize != 4 && laptops->laptops[i].ramsize != 8 && laptops->laptops[i].ramsize != 16 && laptops->laptops[i].ramsize != 32 && laptops->laptops[i].ramsize != 64)
-        {
-            printf("Wrong input.\n");
-            rewind(stdin);
-            scanf_s("%d", &laptops->laptops[i].ramsize);
-        }
+        
+        printf("Enter a RAM size (4, 8, 16, 32, 64).\n");
+        laptops->laptops[i].ramsize = validateInputValues(4, 8, 16, 32, 64);
+
        
         printf("Enter a RAM type.\n");
         scanf_s("%s", laptops->laptops[i].ramtype, sizeof(laptops->laptops[i].ramtype));
 
-        printf("Enter a storage size.\n");
-        scanf_s("%d", &laptops->laptops[i].storagesize);
+        
+        printf("Enter a storage size (128, 256, 512, 1024).\n");
+        laptops->laptops[i].storagesize = validateInputValues(128, 256, 512, 1024);
 
-        while (laptops->laptops[i].storagesize != 128 && laptops->laptops[i].storagesize != 256 && laptops->laptops[i].storagesize != 512 && laptops->laptops[i].storagesize != 1024)
-        {
-            printf("Wrong input.\n");
-            rewind(stdin);
-            scanf_s("%d", &laptops->laptops[i].storagesize);
-        }
-
+       
         printf("Enter a storage type.\n");
         scanf_s("%s", laptops->laptops[i].storagetype, sizeof(laptops->laptops[i].storagetype));
 
+       
         printf("Enter a GPU.\n");
         scanf_s("%s", laptops->laptops[i].gpu, sizeof(laptops->laptops[i].gpu));
 
-        printf("Enter a VRAM.\n");
-        scanf_s("%d", &laptops->laptops[i].vram);
 
-        while (laptops->laptops[i].vram != 4 && laptops->laptops[i].vram != 6 && laptops->laptops[i].vram != 8 && laptops->laptops[i].vram != 12)
-        {
-            printf("Wrong input.\n");
-            rewind(stdin);
-            scanf_s("%d", &laptops->laptops[i].vram);
-        }
-
-        printf("Enter OC.\n");
-        printf("1.Windows 10\n2.Windows 11\n3.Linux\n4.None.\n");
-        
-        int OC = 0;
-        scanf_s("%d", &OC);
+        printf("Enter VRAM (4, 6, 8, 12).\n");
+        laptops->laptops[i].vram = validateInputValues(4, 6, 8, 12);
 
 
+        printf("Enter OC:\n1. Windows 10\n2. Windows 11\n3. Linux\n4. None\n");
+        laptops->laptops[i].OC = validateInputRange(1, 4);
 
-        switch (OC)
-        {
-        case 1:
-            laptops->laptops[i].OC = Windows_10;
-            break;
-        case 2:
-            laptops->laptops[i].OC = Windows_11;
-            break;
-        case 3:
-            laptops->laptops[i].OC = Linux;
-            break;
-        case 4:
-            laptops->laptops[i].OC = None;
-            break;
-        default:
-            break;
-        }
 
-        printf("Enter color.\n");
-        printf("1.Black\n2.Grey\n3.White\n4.Dark grey\n5.Dark blue\n6.Silver\n");
-        printf("Enter a number from 1 to 6.");
-        int color = 0;
-        scanf_s("%d", &color);
-    
+        printf("Enter color:\n1. Black\n2. Grey\n3. White\n4. Dark grey\n5. Dark blue\n6. Silver\n");
+        laptops->laptops[i].color = validateInputRange(1, 6);
 
-        switch (color)
-        {
-        case 1:
-            laptops->laptops[i].color = Black;
-            break;
-        case 2:
-            laptops->laptops[i].color = Grey;
-            break;
-        case 3:
-            laptops->laptops[i].color = White;
-            break;
-        case 4:
-            laptops->laptops[i].color = Dark_Gray;
-            break;
-        case 5:
-            laptops->laptops[i].color = Dark_Blue;
-            break;
-        case 6:
-            laptops->laptops[i].color = Silver;
-            break;
-        default:
-            return 0;
-        }
+   
         printf("Enter a price.\n");
-      
         scanf_s("%f", &laptops->laptops[i].price);
-        
     }
-    
+
     printLapTops(laptops);
     menuint(laptops);
     return 0;
+}
+
+int validateInputRange(int min, int max)
+{
+    int value = 0;
+    scanf_s("%d", &value);
+    while (value < min || value > max)
+    {
+        printf("Wrong input. Please enter a value between %d and %d.\n", min, max);
+        rewind(stdin);
+        scanf_s("%d", &value);
+    }
+    return value;
+}
+
+int validateInputValues(int value1, int value2, int value3)
+{
+    int value = 0;
+    scanf_s("%d", &value);
+    while (value != value1 && value != value2 && value != value3)
+    {
+        printf("Wrong input. Please enter a valid value.\n");
+        rewind(stdin);
+        scanf_s("%d", &value);
+    }
+    return value;
+}
+
+int validateInputValues(int value1, int value2, int value3, int value4)
+{
+    int value = 0;
+    scanf_s("%d", &value);
+    while (value != value1 && value != value2 && value != value3 && value != value4)
+    {
+        printf("Wrong input. Please enter a valid value.\n");
+        rewind(stdin);
+        scanf_s("%d", &value);
+    }
+    return value;
 }
 
 
