@@ -3,19 +3,17 @@
 
 #include "lab2.1.h"
 
-int isThereWord(Words* words, char* word, int size)
-{
+int isThereWord(Words* words, const char* word, int size) {
     int bool_ = 0;
-    for (int i = 0; i < size; i++)
-    {
-        if (words[i].word != NULL && !strcmp(words[i].word, word))
-        {
+    for (int i = 0; i < size; i++) {
+        if (words[i].word != NULL && strcmp(words[i].word, word) == 0) {
             words[i].countWords++;
             bool_ = 1;
         }
     }
     return bool_;
 }
+
 
 void frequency(Words* words, int size)
 {
