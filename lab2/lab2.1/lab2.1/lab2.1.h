@@ -17,6 +17,6 @@ typedef struct
 	int freq;
 }Words;
 
-
+int averageCount(Words* words, int size);
 
 
