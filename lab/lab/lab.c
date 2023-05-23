@@ -228,15 +228,14 @@ int main()
     printf("Enter how you want to fill in the structure.\n1.By hand.\n2.With parser.\n3.Random init");
     int count = 0;
     scanf_s("%d", &count);
-    
-    switch (count)
+    if (count == 1)
     {
-    case 1:
-        system("cls");
+       system("cls");
         initializeStructByHand();
+    }
+    else 
+    {
         break;
-    default:
-        return 0;
     }
     return 0;
 }
