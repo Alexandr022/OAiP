@@ -93,11 +93,13 @@ void moveToHead(HashTable* table, unsigned int index, HashEntry* entry)
     }
 }
 
+
+
 int internalLookup(HashTable* table, const char* key)
 {
     unsigned int index = hash_function(key, table->size);
     HashEntry* current = table->table[index];
-    HashEntry* prev = NULL;
+    const HashEntry* prev = NULL;
 
     while (current != NULL) 
     {
@@ -117,20 +119,6 @@ int internalLookup(HashTable* table, const char* key)
     return 0;
 }
 
-int countEntries(const HashTable* table)
-{
-    int count = 0;
-    for (int i = 0; i < table->size; i++) 
-    {
-        HashEntry* current = table->table[i];
-        while (current != NULL) 
-        {
-            count++;
-            current = current->next;
-        }
-    }
-    return count;
-}
 
 
 void hashtableAdd(HashTable* table, const char* key, const char* value) 
