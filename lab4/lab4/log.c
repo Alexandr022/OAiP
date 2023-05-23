@@ -10,19 +10,16 @@ void logOpen(char* file)
     logOutput = fopen(file, "w");
 }
 
-void createLog(char* format, ...)
-{
+void createLog(const char* format, ...) {
     time_t now = time(NULL);
     char buffer[26];
     struct tm* timeinfo = localtime(&now);
     strftime(buffer, sizeof(buffer), "%H:%M:%S", timeinfo);
-    if (!logOutput)
-    {
+    if (!logOutput) {
         logOutput = stderr;
         fprintf(logOutput, "[%s]Log file is not installed!", buffer);
     }
-    else
-    {
+    else {
         fprintf(logOutput, "[%s]", buffer);
     }
     
