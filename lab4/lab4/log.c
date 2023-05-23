@@ -10,14 +10,12 @@ void logOpen(char* file)
     logOutput = fopen(file, "w");
 }
 
-void createLog(const char* format, ...)
+void createLog(char* format, ...)
 {
     time_t now = time(NULL);
     char buffer[26];
     struct tm* timeinfo = localtime(&now);
     strftime(buffer, sizeof(buffer), "%H:%M:%S", timeinfo);
-    va_list args;
-    va_start(args, format);
     if (!logOutput)
     {
         logOutput = stderr;
@@ -27,10 +25,15 @@ void createLog(const char* format, ...)
     {
         fprintf(logOutput, "[%s]", buffer);
     }
+    
+    va_list args;
+    va_start(args, format);
     vfprintf(logOutput, format, args);
     va_end(args);
+    
     fprintf(logOutput, "\n");
 }
+
 
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
