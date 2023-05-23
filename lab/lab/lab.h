@@ -75,3 +75,5 @@ void menu();
 int validateInputRange(int min, int max);
 
 int validateInputValues(int value1, int value2, int value3);
+
+int validateInputValues(int value1, int value2, int value3, int value4);
