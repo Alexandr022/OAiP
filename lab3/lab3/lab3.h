@@ -45,6 +45,14 @@ typedef struct
 	unsigned char* head;
 }BMPfile;
 
+typedef struct {
+    int red;
+    int green;
+    int blue;
+    int count;
+} PixelAverage;
+
+
 int main();
 
 void menu(BMPfile BMP);
