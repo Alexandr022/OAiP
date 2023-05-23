@@ -3,14 +3,13 @@
 
 #include "lab2.2.h"
 
-int replacement(FILE* file, Words* wordsArrOne, Words* wordsArrTwo, int size, char* word) {
+int replacement(FILE* file, Words* wordsArrOne, Words* wordsArrTwo, int size, const char* word) {
     int bool_ = 0;
-
     for (int i = 0; i < size; i++) {
-        if (!strcmp(wordsArrOne[i].word, word)) {
+        if (strcmp(wordsArrOne[i].word, word) == 0) {
             fprintf(file, "%s", wordsArrTwo[i].word);
             bool_ = 1;
-        } else if (!strcmp(wordsArrTwo[i].word, word)) {
+        } else if (strcmp(wordsArrTwo[i].word, word) == 0) {
             fprintf(file, "%s", wordsArrOne[i].word);
             bool_ = 1;
         }
@@ -46,7 +45,6 @@ void initializeArr(FILE* file, Words** wordsArrayOne, Words** wordsArrayTwo, int
 
 
 void fillFile(FILE* file, FILE* newFile, Words* wordsArrayOne, Words* wordsArrayTwo, int size) {
-    int i = 0;
     while (!feof(file)) {
         char c;
         char* word = malloc(100);
@@ -60,6 +58,7 @@ void fillFile(FILE* file, FILE* newFile, Words* wordsArrayOne, Words* wordsArray
         free(word);
     }
 }
+
 
 void displaySize(FILE* inputFilename, FILE* outputFilename) {
     fseek(inputFilename, 0, SEEK_END);
