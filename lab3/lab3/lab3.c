@@ -5,22 +5,25 @@
 
 BMPfile initBMPstruct(FILE* file)
 {
-	BMPfile BMP;
-	fread(&BMP.BMPHead, sizeof(BMP.BMPHead), 1, file);
-	fread(&BMP.BMPinfo, sizeof(BMP.BMPinfo), 1, file);
+    BMPfile BMP;
+    fread(&BMP.BMPHead, sizeof(BMP.BMPHead), 1, file);
+    fread(&BMP.BMPinfo, sizeof(BMP.BMPinfo), 1, file);
+    fseek(file, 0, SEEK_SET);
+    BMP.head = (unsigned char*)malloc(BMP.BMPHead.offset);
+    fread(BMP.head, sizeof(unsigned char), BMP.BMPHead.offset, file);
 
-	fseek(file, 0, SEEK_SET);
-	BMP.head = (unsigned char*)malloc(BMP.BMPHead.offset);
-	fread(BMP.head, sizeof(unsigned char), BMP.BMPHead.offset, file);
+    int numPixels = BMP.BMPinfo.width * BMP.BMPinfo.height;
+    int bytesPerPixel = BMP.BMPinfo.bitsPixels / 8;
+    BMP.pixels = (unsigned char*)malloc(numPixels * bytesPerPixel);
 
-	BMP.pixels = (unsigned char*)malloc(BMP.BMPinfo.width * BMP.BMPinfo.height * BMP.BMPinfo.bitsPixels / 8);
+    for (int i = 0; i < numPixels; i++) {
+        if (fread(&BMP.pixels[i * bytesPerPixel], sizeof(unsigned char), bytesPerPixel, file) != bytesPerPixel) {
+            printf("Error reading pixel data.\n");
+            break;
+        }
+    }
 
-	for (int i = 0; !feof(file); i++)
-	{
-		fread(&BMP.pixels[i], sizeof(unsigned char), 1, file);
-	}
-
-	return BMP;
+    return BMP;
 }
 
 void outputBMPfile(FILE* file, BMPfile BMP)
@@ -65,7 +68,7 @@ void copyPixelData(const unsigned char* srcPixels, unsigned char* destPixels, in
     }
 }
 
-void calculatePixelAverage(const unsigned char* tempPixels, const BMPinfo* BMPinfo, int x, int y, int filterSize, int* red, int* green, int* blue, int* count)
+void calculatePixelAverage(const unsigned char* tempPixels, const BMPinfo* BMPinfo, int x, int y, int filterSize, PixelAverage* average)
 {
     int width = BMPinfo->width;
     int height = BMPinfo->height;
@@ -80,18 +83,19 @@ void calculatePixelAverage(const unsigned char* tempPixels, const BMPinfo* BMPin
                 int b = tempPixels[index];
                 int g = tempPixels[index + 1];
                 int r = tempPixels[index + 2];
-                *blue += b;
-                *green += g;
-                *red += r;
-                (*count)++;
+                average->blue += b;
+                average->green += g;
+                average->red += r;
+                (average->count)++;
             }
         }
     }
 }
 
+
 void medianFilter(BMPfile* BMP, int filterSize)
 {
-    //int pad = (4 - ((BMP->BMPinfo.width * BMP->BMPinfo.bitsPixels / 8) % 4)) % 4;
+  
     unsigned char* tempPixels = (unsigned char*)malloc(BMP->BMPinfo.width * BMP->BMPinfo.height * BMP->BMPinfo.bitsPixels / 8);
 
     if (tempPixels == NULL) {
