@@ -46,8 +46,8 @@ void distribution(Words* words, int* size, Words** wordsArrayOne, Words** wordsA
     Words* tempOne = NULL;
     Words* tempTwo = NULL;
     
+    int reallocationFailure = 0;
     
-    int reallocationFailure = 0;  
     for (int i = 0; i < *size; i++)
     {
         if (wordsArrayTwo != NULL && *wordsArrayTwo != NULL && words[i].countWords > countWords && words[i].wordSize > wordSize)
@@ -57,7 +57,7 @@ void distribution(Words* words, int* size, Words** wordsArrayOne, Words** wordsA
             {
                 printf("Memory reallocation failed.\n");
                 reallocationFailure = 1;
-                break;  
+                break;
             }
             *wordsArrayTwo = tempTwo;
             (*wordsArrayTwo)[sizeTwo] = words[i];
@@ -70,7 +70,7 @@ void distribution(Words* words, int* size, Words** wordsArrayOne, Words** wordsA
             {
                 printf("Memory reallocation failed.\n");
                 reallocationFailure = 1;
-                break;  
+                break;
             }
             *wordsArrayOne = tempOne;
             (*wordsArrayOne)[sizeOne] = words[i];
@@ -111,19 +111,22 @@ void distribution(Words* words, int* size, Words** wordsArrayOne, Words** wordsA
     
     if (reallocationFailure)
     {
-       
         free(*wordsArrayOne);
-        free(*wordsArrayTwo);
         *wordsArrayOne = NULL;
-        *wordsArrayTwo = NULL;
+        
+        // Free only if wordsArrayTwo is not NULL
+        if (wordsArrayTwo != NULL)
+        {
+            free(*wordsArrayTwo);
+            *wordsArrayTwo = NULL;
+        }
+        
         sizeOne = 0;
         sizeTwo = 0;
     }
     
     *size = sizeOne;
 }
-
-
 
 int replaceWords(FILE* file, Words* wordsArrayOne, Words* wordsArrayTwo, int size, const char* word)
 {
