@@ -8,7 +8,7 @@ int main()
 {
    char log[LENGTH];
     time_t now = time(NULL);
-     struct tm* timeinfo = localtime(&now);
+    const struct tm* timeinfo = localtime(&now);
     strftime(log, sizeof(log), "log_%Y-%m-%d_%H-%M-%S.txt", timeinfo);
     logOpen(log);
     printf("Enter file name");
